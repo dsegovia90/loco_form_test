@@ -1,0 +1,8 @@
+---
+source: tests/requests/home.rs
+expression: "(response.status_code(), response.text())"
+---
+(
+    200,
+    "{\"name\":\"Daniel\",\"age\":99,\"parsed_from\":\"Json\"}",
+)
