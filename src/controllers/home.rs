@@ -18,7 +18,7 @@ struct FormRequest {
     age: u8,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub enum FormOrJsonType {
     Json,
     Form,
@@ -77,10 +77,26 @@ where
     }
 }
 
+#[derive(Debug, Serialize)]
+struct FormHandlerResponse {
+    name: String,
+    age: u8,
+    parsed_from: FormOrJsonType,
+}
+
 #[debug_handler]
-async fn form_handler(FormOrJson { extractor, .. }: FormOrJson<FormRequest>) -> Result<Response> {
-    let x = extractor;
-    Ok(Json(x).into_response())
+async fn form_handler(
+    FormOrJson {
+        extractor,
+        extractor_type,
+    }: FormOrJson<FormRequest>,
+) -> Result<Json<FormHandlerResponse>> {
+    let response = FormHandlerResponse {
+        name: extractor.name,
+        age: extractor.age,
+        parsed_from: extractor_type,
+    };
+    Ok(Json(response))
 }
 
 pub fn routes() -> Routes {
