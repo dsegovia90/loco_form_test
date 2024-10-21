@@ -1,0 +1,44 @@
+[workspace]
+
+[package]
+name = "form_tester"
+version = "0.1.0"
+edition = "2021"
+publish = false
+default-run = "form_tester-cli"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+loco-rs = { default-features = false, features = [
+  "cli",
+], git = "https://github.com/dsegovia90/loco" }
+serde = "1"
+serde_json = "1"
+tokio = { version = "1.33.0", default-features = false, features = [
+  "rt-multi-thread",
+] }
+async-trait = "0.1.74"
+axum = "0.7.5"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.17", features = ["env-filter", "json"] }
+
+[[bin]]
+name = "form_tester-cli"
+path = "src/bin/main.rs"
+required-features = []
+
+[[bin]]
+name = "tool"
+path = "src/bin/tool.rs"
+required-features = []
+
+[dev-dependencies]
+serial_test = "3.1.1"
+rstest = "0.21.0"
+loco-rs = { default-features = false, features = [
+  "testing",
+  "cli",
+], git = "https://github.com/dsegovia90/loco" }
+insta = { version = "*", features = ["redactions", "yaml", "filters"] }
